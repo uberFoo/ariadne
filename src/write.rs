@@ -189,7 +189,7 @@ impl<S: Span> Report<'_, S> {
             let line_ref = format!(":{}:{}", line_no, col_no);
             writeln!(
                 w,
-                "{}{}{}{}{}{}{}",
+                "{}{}{}{} {}{} {}",
                 Show((' ', line_no_width + 2)),
                 if group_idx == 0 {
                     draw.ltop
@@ -276,7 +276,9 @@ impl<S: Span> Report<'_, S> {
 
                 // Multi-line margins
                 if draw_labels {
-                    for col in 0..multi_labels_with_message.len() + (multi_labels_with_message.len() > 0) as usize {
+                    for col in 0..multi_labels_with_message.len()
+                        + (multi_labels_with_message.len() > 0) as usize
+                    {
                         let mut corner = None;
                         let mut hbar = None;
                         let mut vbar: Option<&&Label<S>> = None;
@@ -285,7 +287,8 @@ impl<S: Span> Report<'_, S> {
                         let multi_label = multi_labels_with_message.get(col);
                         let line_span = src.line(idx).unwrap().span();
 
-                        for (i, label) in multi_labels_with_message[0..(col + 1).min(multi_labels_with_message.len())]
+                        for (i, label) in multi_labels_with_message
+                            [0..(col + 1).min(multi_labels_with_message.len())]
                             .iter()
                             .enumerate()
                         {
@@ -605,7 +608,7 @@ impl<S: Span> Report<'_, S> {
                     let line_label = &line_labels[row];
                     //No message to draw thus no arrow to draw
                     if line_label.label.msg.is_none() {
-                        continue
+                        continue;
                     }
                     if !self.config.compact {
                         // Margin alternate
@@ -871,9 +874,9 @@ mod tests {
            ,-[<unknown>:1:1]
            |
          1 | apple == orange;
-           | ^^|^^    ^^^|^^  
+           | ^^|^^    ^^^|^^
            |   `-------------- This is an apple
-           |             |    
+           |             |
            |             `---- This is an orange
         ---'
         "###);
@@ -896,7 +899,7 @@ mod tests {
            ,-[<unknown>:1:1]
            |
          1 | apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == apple == orange
-           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^^|^^  
+           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^^|^^
            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `---- This is an orange
         ---'
         "###);
@@ -912,13 +915,13 @@ mod tests {
             .write_to_string(Source::from(source));
         // TODO: it would be nice if the 2nd line wasn't omitted
         assert_snapshot!(msg, @r###"
-        Error: 
+        Error:
            ,-[<unknown>:1:1]
            |
          1 | ,-> apple
-           : :   
+           : :
          3 | |-> orange
-           | |           
+           | |
            | `----------- illegal comparison
         ---'
         "###);
@@ -935,13 +938,13 @@ mod tests {
             .write_to_string(Source::from(source));
         // TODO: it would be nice if you could tell where the spans start and end.
         assert_snapshot!(msg, @r###"
-        Error: 
+        Error:
            ,-[<unknown>:1:1]
            |
          1 | https://example.com/
-           | ^^|^^^^^^^|^^^^^^^^^  
+           | ^^|^^^^^^^|^^^^^^^^^
            |   `------------------- scheme
-           |           |           
+           |           |
            |           `----------- URL
         ---'
         "###);
@@ -966,17 +969,17 @@ mod tests {
            ,-[<unknown>:1:1]
            |
          1 | apple == orange;
-           | ^^|^^    ^^^|^^  
+           | ^^|^^    ^^^|^^
            |   `-------------- This is an apple
-           |   |         |    
+           |   |         |
            |   `-------------- Have I mentioned that this is an apple?
-           |   |         |    
+           |   |         |
            |   `-------------- No really, have I mentioned that?
-           |             |    
+           |             |
            |             `---- This is an orange
-           |             |    
+           |             |
            |             `---- Have I mentioned that this is an orange?
-           |             |    
+           |             |
            |             `---- No really, have I mentioned that?
         ---'
         "###)
@@ -998,11 +1001,11 @@ mod tests {
            ,-[<unknown>:1:1]
            |
          1 | apple == orange;
-           | ^^|^^    ^^^|^^  
+           | ^^|^^    ^^^|^^
            |   `-------------- This is an apple
-           |             |    
+           |             |
            |             `---- This is an orange
-           | 
+           |
            | Note: stop trying ... this is a fruitless endeavor
         ---'
         "###)
@@ -1024,11 +1027,11 @@ mod tests {
            ,-[<unknown>:1:1]
            |
          1 | apple == orange;
-           | ^^|^^    ^^^|^^  
+           | ^^|^^    ^^^|^^
            |   `-------------- This is an apple
-           |             |    
+           |             |
            |             `---- This is an orange
-           | 
+           |
            | Help: have you tried peeling the orange?
         ---'
         "###)
@@ -1051,13 +1054,13 @@ mod tests {
            ,-[<unknown>:1:1]
            |
          1 | apple == orange;
-           | ^^|^^    ^^^|^^  
+           | ^^|^^    ^^^|^^
            |   `-------------- This is an apple
-           |             |    
+           |             |
            |             `---- This is an orange
-           | 
+           |
            | Help: have you tried peeling the orange?
-           | 
+           |
            | Note: stop trying ... this is a fruitless endeavor
         ---'
         "###)
